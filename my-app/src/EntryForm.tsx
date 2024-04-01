@@ -1,4 +1,15 @@
+import { FormEvent } from 'react';
+import { useState } from 'react';
+
 export function EntryForm() {
+  const [title, setTitle] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [notes, setNotes] = useState('');
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
+    console.log({ title, photoUrl, notes });
+  }
   return (
     <div className="container" data-view="entry-form">
       <div className="row">
@@ -6,7 +17,7 @@ export function EntryForm() {
           <h1 id="formH1">New Entry</h1>
         </div>
       </div>
-      <form id="entryForm">
+      <form id="entryForm" onSubmit={handleSubmit}>
         <div className="row margin-bottom-1">
           <div className="column-half">
             <img
@@ -25,6 +36,7 @@ export function EntryForm() {
                 type="text"
                 id="formTitle"
                 name="formTitle"
+                onChange={(e) => setTitle(e.target.value)}
               />
             </label>
             <label className="margin-bottom-1 d-block">
@@ -35,6 +47,7 @@ export function EntryForm() {
                 type="text"
                 id="formURL"
                 name="formURL"
+                onChange={(e) => setPhotoUrl(e.target.value)}
               />
             </label>
           </div>
@@ -48,6 +61,7 @@ export function EntryForm() {
                 className="input-b-color text-padding input-b-radius purple-outline d-block width-100"
                 name="formNotes"
                 id="formNotes"
+                onChange={(e) => setNotes(e.target.value)}
                 // cols="30"
                 // rows="10"
               ></textarea>
