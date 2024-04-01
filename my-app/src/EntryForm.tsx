@@ -1,11 +1,38 @@
 import { FormEvent } from 'react';
 import { useState } from 'react';
 import { addEntry } from './data';
+import { useParams } from 'react-router-dom';
+import { readEntry, type Entry } from './data';
+import { useEffect } from 'react';
 
 export function EntryForm() {
   const [title, setTitle] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [notes, setNotes] = useState('');
+  const { entryId } = useParams();
+  const isEditing = entryId && entryId !== 'new';
+  const [error, setError] = useState<unknown>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeEntry, setActiveEntry] = useState<Entry>();
+
+  useEffect(() => {
+    async function work(entryId: number) {
+      setIsLoading(true);
+      try {
+        const entry = await readEntry(entryId);
+        if (!entry) throw new Error(`Entry with ID ${entryId} not found`);
+        setActiveEntry(entry);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if (isEditing) work(+entryId);
+  }, [entryId]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An Error!</div>;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -40,6 +67,7 @@ export function EntryForm() {
                 id="formTitle"
                 name="formTitle"
                 onChange={(e) => setTitle(e.target.value)}
+                defaultValue={activeEntry?.title || title}
               />
             </label>
             <label className="margin-bottom-1 d-block">
@@ -51,6 +79,7 @@ export function EntryForm() {
                 id="formURL"
                 name="formURL"
                 onChange={(e) => setPhotoUrl(e.target.value)}
+                defaultValue={activeEntry?.photoUrl ?? photoUrl}
               />
             </label>
           </div>
@@ -65,6 +94,7 @@ export function EntryForm() {
                 name="formNotes"
                 id="formNotes"
                 onChange={(e) => setNotes(e.target.value)}
+                defaultValue={activeEntry?.notes ?? notes}
                 // cols="30"
                 // rows="10"
               ></textarea>

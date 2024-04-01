@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export function Header() {
   return (
     <>
@@ -8,12 +9,12 @@ export function Header() {
             <div className="column-full d-flex align-center">
               <h1 className="white-text">Code Journal</h1>
               <h3>
-                <a
+                <Link
                   id="entriesLink"
                   className="entries-link white-text"
-                  href="#">
+                  to="/">
                   Entries
-                </a>
+                </Link>
               </h3>
             </div>
           </div>

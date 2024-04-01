@@ -66,3 +66,7 @@ export function removeEntry(entryId: number): void {
   data.entries = updatedArray;
   writeData(data);
 }
+
+export async function readEntry(entryId: number): Promise<Entry | undefined> {
+  return readData().entries.find((e) => e.entryId === entryId);
+}
