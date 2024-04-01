@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useState } from 'react';
 import { addEntry } from './data';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { readEntry, type Entry } from './data';
 import { useEffect } from 'react';
 
@@ -38,6 +38,9 @@ export function EntryForm() {
     event?.preventDefault();
     addEntry({ title, photoUrl, notes });
     event.currentTarget.reset();
+    console.log('title:', title);
+    console.log('photoUrl:', photoUrl);
+    console.log('notes:', notes);
   }
 
   return (
@@ -109,9 +112,11 @@ export function EntryForm() {
               id="deleteEntry">
               Delete Entry
             </button>
-            <button className="input-b-radius text-padding purple-background white-text">
-              SAVE
-            </button>
+            <Link to="/">
+              <button className="input-b-radius text-padding purple-background white-text">
+                SAVE
+              </button>
+            </Link>
           </div>
         </div>
       </form>
