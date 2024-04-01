@@ -1,5 +1,6 @@
 import { FormEvent } from 'react';
 import { useState } from 'react';
+import { addEntry } from './data';
 
 export function EntryForm() {
   const [title, setTitle] = useState('');
@@ -8,8 +9,10 @@ export function EntryForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    console.log({ title, photoUrl, notes });
+    addEntry({ title, photoUrl, notes });
+    event.currentTarget.reset();
   }
+
   return (
     <div className="container" data-view="entry-form">
       <div className="row">
